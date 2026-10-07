@@ -50,54 +50,6 @@ class EnderecoRepository {
             return rows[0] ?? null
     }
 
-    async findByLogradouro(logradouro) {
-        const [rows] = await pool.execute(`
-            SELECT
-                id,
-                usuario_id,
-                logradouro,
-                numero,
-                complemento,
-                bairro,
-                cidade,
-                estado,
-                cep,
-                pais,
-                endereco_principal,
-                endereco_cobranca,
-                data_criacao,
-                data_atualizacao
-            FROM endereco_usuario
-            WHERE logradouro = ?
-            `[logradouro])
-
-            return rows[0] ?? null
-    }
-
-    async findByCep(cep) {
-        const [rows] = await pool.execute(`
-            SELECT
-                id,
-                usuario_id,
-                logradouro,
-                numero,
-                complemento,
-                bairro,
-                cidade,
-                estado,
-                cep,
-                pais,
-                endereco_principal,
-                endereco_cobranca,
-                data_criacao,
-                data_atualizacao
-            FROM endereco_usuario
-            WHERE cep = ?
-            `[cep])
-
-            return rows[0] ?? null
-    }
-
     async create({
         id,
         usuario_id,
@@ -127,13 +79,9 @@ class EnderecoRepository {
                 cidade,
                 estado,
                 cep,
-                pais,
-                endereco_principal,
-                endereco_cobranca,
-                data_criacao,
-                data_atualizacao
+                pais
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             `)
     }
 }
