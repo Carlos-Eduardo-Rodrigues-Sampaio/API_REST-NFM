@@ -1,5 +1,3 @@
-import { format } from "mysql2"
-
 export const usuarioParamsSchema = {
     type: 'object',
 
@@ -28,13 +26,13 @@ export const usuarioBodySchema = {
         email: {
             type: 'string',
             format: 'email',
-            maxLenght: '150'
+            maxLenght: 150
         },
 
         senha_hash: {
             type: 'string',
-            minLenght: '1',
-            maxLenght: '255'
+            minLenght: 1,
+            maxLenght: 255
         },
 
         cpf: {
@@ -49,13 +47,13 @@ export const usuarioBodySchema = {
 
         sexo: {
             type: 'string',
-            minLenght: '1',
-            maxLenght: '20'
+            minLenght: 1,
+            maxLenght: 20
         },
 
         telefone: {
             type: 'string',
-            maxLenght: '20'
+            maxLenght: 20
         },
 
         status: {
