@@ -1,10 +1,11 @@
-import enderecoRepository from '../repositories/enderecoRepository.js';
+import enderecoRepository from '../repositories/enderecoRepository.js'
 
-class EnderecoRepository {
+class EnderecoController {
+
     async index(request, reply) {
-        const enderecos = await enderecoRepository.findAll();
+        const enderecos = await enderecoRepository.findAll()
 
-        return reply.send(enderecos)
+        return reply.code(200).send(enderecos)
     }
 
     async show(request, reply) {
@@ -12,31 +13,33 @@ class EnderecoRepository {
 
         const endereco = await enderecoRepository.findById(id)
 
-        if(!endereco) {
+        if (!endereco) {
             return reply.code(404).send({
                 message: 'Endereço não encontrado!'
             })
         }
+
+        return reply.code(200).send(endereco)
     }
 
     async store(request, reply) {
         const {
             usuario_id,
-                logradouro,
-                numero,
-                complemento,
-                bairro,
-                cidade,
-                estado,
-                cep,
-                pais,
-                endereco_principal,
-                endereco_cobranca
+            logradouro,
+            numero,
+            complemento,
+            bairro,
+            cidade,
+            estado,
+            cep,
+            pais,
+            endereco_principal,
+            endereco_cobranca
         } = request.body
 
         const endereco = await enderecoRepository.create({
             usuario_id,
-            logradouro,                
+            logradouro,
             numero,
             complemento,
             bairro,
@@ -53,8 +56,8 @@ class EnderecoRepository {
 
     async update(request, reply) {
         const { id } = request.params
+
         const {
-            usuario_id,
             logradouro,
             numero,
             complemento,
@@ -68,7 +71,6 @@ class EnderecoRepository {
         } = request.body
 
         const endereco = await enderecoRepository.update(id, {
-            usuario_id,
             logradouro,
             numero,
             complemento,
@@ -81,13 +83,13 @@ class EnderecoRepository {
             endereco_cobranca
         })
 
-        if(!endereco) {
+        if (!endereco) {
             return reply.code(404).send({
                 message: 'Endereço não encontrado!'
             })
         }
 
-        return reply.send(endereco)
+        return reply.code(200).send(endereco)
     }
 
     async delete(request, reply) {
@@ -95,7 +97,7 @@ class EnderecoRepository {
 
         const deleted = await enderecoRepository.delete(id)
 
-        if(!deleted) {
+        if (!deleted) {
             return reply.code(404).send({
                 message: 'Endereço não encontrado!'
             })
@@ -103,7 +105,6 @@ class EnderecoRepository {
 
         return reply.code(204).send()
     }
-
 }
 
-export default new EnderecoRepository()
+export default new EnderecoController()

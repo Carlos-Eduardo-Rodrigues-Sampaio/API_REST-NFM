@@ -1,6 +1,6 @@
 import usuarioRepository from '../repositories/usuarioRepository.js'
 
-class UsuarioRepository {
+class UsuarioController {
     async index(request, reply) {
         const usuarios = await usuarioRepository.findAll()
 
@@ -92,4 +92,4 @@ class UsuarioRepository {
     }
 }
 
-export default new UsuarioRepository()
+export default new UsuarioController()
