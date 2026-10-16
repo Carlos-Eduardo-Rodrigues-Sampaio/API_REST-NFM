@@ -25,6 +25,16 @@ app.setErrorHandler((error, request, reply) => {
         })
     }
 
+    if (
+        Number.isInteger(error.statusCode) &&
+        error.statusCode >= 400 &&
+        error.statusCode < 500
+    ) {
+        return reply.code(error.statusCode).send({
+            message: error.message
+        })
+    }
+
     return reply.code(500).send({
         message: 'Erro interno do servidor!'
     })

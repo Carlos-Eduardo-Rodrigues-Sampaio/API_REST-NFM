@@ -1,22 +1,30 @@
-import enderecoController from '../controllers/enderecoController.js';
+import enderecoController from '../controllers/enderecoController.js'
 
 import {
     enderecoBodySchema,
-    enderecoParamsSchema
+    enderecoParamsSchema,
+    enderecoUpdateBodySchema
 } from '../schemas/enderecoSchema.js'
 
 async function enderecoRoutes(fastify) {
-    fastify.get('/', enderecoController.index)
 
-    fastify.get('/:id',
+    fastify.get(
+        '/',
+        enderecoController.index
+    )
+
+    fastify.get(
+        '/:id',
         {
             schema: {
                 params: enderecoParamsSchema
             }
         },
-        enderecoController.show)
+        enderecoController.show
+    )
 
-    fastify.post('/',
+    fastify.post(
+        '/',
         {
             schema: {
                 body: enderecoBodySchema
@@ -25,17 +33,19 @@ async function enderecoRoutes(fastify) {
         enderecoController.store
     )
 
-    fastify.put('/:id',
+    fastify.patch(
+        '/:id',
         {
-            schema :{
+            schema: {
                 params: enderecoParamsSchema,
-                body: enderecoBodySchema
+                body: enderecoUpdateBodySchema
             }
         },
         enderecoController.update
     )
 
-    fastify.delete('/:id',
+    fastify.delete(
+        '/:id',
         {
             schema: {
                 params: enderecoParamsSchema
