@@ -19,25 +19,25 @@ export const usuarioBodySchema = {
     properties: {
         nome: {
             type: 'string',
-            minLenght: 2,
-            maxLenght: 100
+            minLength: 2,
+            maxLength: 100
         },
 
         email: {
             type: 'string',
             format: 'email',
-            maxLenght: 150
+            maxLength: 150
         },
 
         senha_hash: {
             type: 'string',
-            minLenght: 1,
-            maxLenght: 255
+            minLength: 1,
+            maxLength: 255
         },
 
         cpf: {
             type: 'string',
-            pattern: '[0-9]{11}$'
+            pattern: '^[0-9]{11}$'
         },
 
         data_nascimento: {
@@ -47,13 +47,13 @@ export const usuarioBodySchema = {
 
         sexo: {
             type: 'string',
-            minLenght: 1,
-            maxLenght: 20
+            minLength: 1,
+            maxLength: 20
         },
 
         telefone: {
             type: 'string',
-            maxLenght: 20
+            maxLength: 20
         },
 
         status: {

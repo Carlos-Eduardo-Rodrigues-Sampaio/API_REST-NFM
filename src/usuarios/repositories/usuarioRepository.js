@@ -1,5 +1,5 @@
 import { randomUUID } from 'crypto'
-import pool from './usuarios/database/connection.js'
+import pool from '../database/connection.js'
 
 class UsuarioRepository {
   async findAll() {
