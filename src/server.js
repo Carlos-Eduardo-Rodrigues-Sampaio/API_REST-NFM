@@ -1,7 +1,7 @@
 import app from './app.js';
 import pool from './usuarios/database/connection.js'
 
-const port = Number(process.env.PORT) || 3000
+const port = Number(process.env.PORT) || 3306
 
 async function start() {
     try {
