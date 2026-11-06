@@ -1,6 +1,23 @@
 import enderecoRepository from '../repositories/enderecoRepository.js'
+import usuarioRepository from '../../repositories/usuarioRepository.js'
 
 class EnderecoController {
+
+    async indexByUsuario(request, reply) {
+        const { id } = request.params
+
+        const usuario = await usuarioRepository.findById(id)
+
+        if (!usuario) {
+            return reply.code(404).send({
+                message: 'Usuário não encontrado!'
+            })
+        }
+
+        const enderecos = await enderecoRepository.findByUsuarioId(id)
+
+        return reply.code(200).send(enderecos)
+    }
 
     async index(request, reply) {
         const enderecos = await enderecoRepository.findAll()
@@ -57,31 +74,13 @@ class EnderecoController {
     async update(request, reply) {
         const { id } = request.params
 
-        const {
-            logradouro,
-            numero,
-            complemento,
-            bairro,
-            cidade,
-            estado,
-            cep,
-            pais,
-            endereco_principal,
-            endereco_cobranca
-        } = request.body
+        if (Object.keys(request.body).length === 0) {
+            return reply.code(400).send({
+                message: 'Informe ao menos um campo válido para atualizar!'
+            })
+        }
 
-        const endereco = await enderecoRepository.update(id, {
-            logradouro,
-            numero,
-            complemento,
-            bairro,
-            cidade,
-            estado,
-            cep,
-            pais,
-            endereco_principal,
-            endereco_cobranca
-        })
+        const endereco = await enderecoRepository.update(id, request.body)
 
         if (!endereco) {
             return reply.code(404).send({

@@ -125,48 +125,36 @@ class EnderecoRepository {
         return this.findById(id)
     }
 
-    async update(
-        id,
-        {
-            logradouro,
-            numero,
-            complemento,
-            bairro,
-            cidade,
-            estado,
-            cep,
-            pais,
-            endereco_principal,
-            endereco_cobranca
+    async update(id, campos) {
+        const colunasPermitidas = [
+            'logradouro',
+            'numero',
+            'complemento',
+            'bairro',
+            'cidade',
+            'estado',
+            'cep',
+            'pais',
+            'endereco_principal',
+            'endereco_cobranca'
+        ]
+
+        const colunas = colunasPermitidas.filter(
+            (coluna) => campos[coluna] !== undefined
+        )
+
+        if (colunas.length === 0) {
+            return this.findById(id)
         }
-    ) {
+
+        const setClause = colunas.map((coluna) => `${coluna} = ?`).join(', ')
+        const valores = colunas.map((coluna) => campos[coluna])
+
         const [result] = await pool.execute(`
             UPDATE endereco_usuario
-            SET
-                logradouro = ?,
-                numero = ?,
-                complemento = ?,
-                bairro = ?,
-                cidade = ?,
-                estado = ?,
-                cep = ?,
-                pais = ?,
-                endereco_principal = ?,
-                endereco_cobranca = ?
+            SET ${setClause}
             WHERE id = ?
-        `, [
-            logradouro,
-            numero,
-            complemento ?? null,
-            bairro,
-            cidade,
-            estado,
-            cep,
-            pais,
-            endereco_principal,
-            endereco_cobranca,
-            id
-        ])
+        `, [...valores, id])
 
         if (result.affectedRows === 0) {
             return null

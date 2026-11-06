@@ -74,7 +74,6 @@ const enderecoProperties = {
     }
 }
 
-// Schema para cadastrar um endereço
 export const enderecoBodySchema = {
     type: 'object',
 
@@ -94,7 +93,6 @@ export const enderecoBodySchema = {
     additionalProperties: false
 }
 
-// Schema para atualizar um endereço
 export const enderecoUpdateBodySchema = {
     type: 'object',
 
@@ -116,4 +114,27 @@ export const enderecoUpdateBodySchema = {
     minProperties: 1,
 
     additionalProperties: false
+}
+
+export const enderecoResponseSchema = {
+    type: 'object',
+
+    properties: {
+        id: { type: 'string', format: 'uuid' },
+        usuario_id: { type: 'string', format: 'uuid' },
+        logradouro: { type: 'string' },
+        numero: { type: 'string' },
+        complemento: { type: ['string', 'null'] },
+        bairro: { type: 'string' },
+        cidade: { type: 'string' },
+        estado: { type: 'string' },
+        cep: { type: 'string' },
+        pais: { type: 'string' },
+        endereco_principal: { type: 'integer' },
+        endereco_cobranca: { type: 'integer' },
+        data_criacao: { type: 'string', format: 'date-time' },
+        data_atualizacao: { type: 'string', format: 'date-time' }
+    },
+
+    additionalProperties: true
 }

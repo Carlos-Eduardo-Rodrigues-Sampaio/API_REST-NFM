@@ -1,4 +1,5 @@
 import usuarioRepository from '../repositories/usuarioRepository.js'
+import { hashPassword, verifyPassword } from '../utils/password.js'
 
 class UsuarioController {
     async index(request, reply) {
@@ -22,15 +23,18 @@ class UsuarioController {
     }
 
     async store(request, reply) {
-        const { 
+        const {
             nome,
             email,
-            senha_hash,
+            senha,
             cpf,
             data_nascimento,
-            sexo, telefone,
-            status 
+            sexo,
+            telefone,
+            status
         } = request.body
+
+        const senha_hash = await hashPassword(senha)
 
         const usuario = await usuarioRepository.create({
             nome,
@@ -46,16 +50,16 @@ class UsuarioController {
         return reply.code(201).send(usuario)
     }
 
-    async update(request,reply) {
+    async update(request, reply) {
         const { id } = request.params
-        const { 
-            nome, 
-            email, 
-            cpf, 
-            data_nascimento, 
-            sexo, 
-            telefone, 
-            status 
+        const {
+            nome,
+            email,
+            cpf,
+            data_nascimento,
+            sexo,
+            telefone,
+            status
         } = request.body
 
         const usuario = await usuarioRepository.update(id, {
@@ -70,11 +74,38 @@ class UsuarioController {
 
         if (!usuario) {
             return reply.code(404).send({
-                message: 'usuário não encontrado!'
+                message: 'Usuário não encontrado!'
             })
         }
 
         return reply.send(usuario)
+    }
+
+    async updatePassword(request, reply) {
+        const { id } = request.params
+        const { senha_atual, nova_senha } = request.body
+
+        const senhaHashAtual = await usuarioRepository.findSenhaHashById(id)
+
+        if (!senhaHashAtual) {
+            return reply.code(404).send({
+                message: 'Usuário não encontrado!'
+            })
+        }
+
+        const senhaCorreta = await verifyPassword(senha_atual, senhaHashAtual)
+
+        if (!senhaCorreta) {
+            return reply.code(401).send({
+                message: 'Senha atual incorreta!'
+            })
+        }
+
+        const novoHash = await hashPassword(nova_senha)
+
+        await usuarioRepository.updatePassword(id, novoHash)
+
+        return reply.code(204).send()
     }
 
     async delete(request, reply) {

@@ -140,7 +140,7 @@ class UsuarioRepository {
         data_nascimento = ?,
         sexo = ?,
         telefone = ?,
-        status = ?
+        status = COALESCE(?, status)
       WHERE id = ?
     `, [
       nome,
@@ -149,7 +149,7 @@ class UsuarioRepository {
       data_nascimento,
       sexo,
       telefone ?? null,
-      status,
+      status ?? null,
       id
     ])
 
@@ -158,6 +158,16 @@ class UsuarioRepository {
     }
 
     return this.findById(id)
+  }
+
+  async findSenhaHashById(id) {
+    const [rows] = await pool.execute(`
+      SELECT senha_hash
+      FROM usuario
+      WHERE id = ?
+    `, [id])
+
+    return rows[0]?.senha_hash ?? null
   }
 
   async updatePassword(id, senha_hash) {
